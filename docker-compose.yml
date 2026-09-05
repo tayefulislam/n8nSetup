@@ -4,46 +4,37 @@ services:
     image: postgres:16
     container_name: n8n-postgres
     restart: unless-stopped
-
     environment:
       POSTGRES_USER: n8n
-      POSTGRES_PASSWORD: RxTf8stW7BDfHNz
+      POSTGRES_PASSWORD: CHANGE_THIS_TO_A_STRONG_PASSWORD
       POSTGRES_DB: n8n
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
     networks:
       - n8n_network
-
 
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
     container_name: n8n
     restart: unless-stopped
-
     depends_on:
       - postgres
-
-    ports:
-      - "127.0.0.1:5678:5678"
-
     environment:
-      DB_TYPE: postgresdb
-      DB_POSTGRESDB_HOST: postgres
-      DB_POSTGRESDB_PORT: 5432
-      DB_POSTGRESDB_DATABASE: n8n
-      DB_POSTGRESDB_USER: n8n
-      DB_POSTGRESDB_PASSWORD: RxTf8stW7BDfHNz
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=n8n
+      - DB_POSTGRESDB_PASSWORD=CHANGE_THIS_TO_A_STRONG_PASSWORD
 
-      N8N_HOST: n8n.bluespacejp.com
-      N8N_PORT: 5678
-      N8N_PROTOCOL: https
-      WEBHOOK_URL: https://n8n.bluespacejp.com/
+      - N8N_HOST=n8n.example.com
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://n8n.example.com/
 
-      NODE_ENV: production
-      GENERIC_TIMEZONE: Asia/Dhaka
-      TZ: Asia/Dhaka
+      - NODE_ENV=production
+      - GENERIC_TIMEZONE=Asia/Dhaka
+      - TZ=Asia/Dhaka
 
     volumes:
       - n8n_data:/home/node/.n8n
@@ -51,11 +42,9 @@ services:
     networks:
       - n8n_network
 
-
 volumes:
   postgres_data:
   n8n_data:
-
 
 networks:
   n8n_network:
